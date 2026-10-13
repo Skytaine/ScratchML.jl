@@ -2,7 +2,18 @@ try; import KaimonSlate; catch; error("This is a Kaimon Slate notebook — runni
 
 #%% md id=intro
 @md"""
-# New Notebook
+# Kmean
+"""
+
+#%% md id=f44cc3
+@md raw"""
+## Ce que l'on veut
+
+Mesurer à quel point deux points `a` et `b` sont éloignés :
+
+$$d(a, b) = \sum_{r} (a_r - b_r)^2$$
+
+C'est la **distance euclidienne au carré**. On garde le carré (pas de racine) car, pour savoir quel point est le plus proche, le classement est le même : si $d_1 < d_2$ alors $\sqrt{d_1} < \sqrt{d_2}$. On évite ainsi un calcul coûteux répété des milliers de fois dans K-Means.
 """
 
 # ╔═╡ Slate.config · per-notebook settings (Settings panel)

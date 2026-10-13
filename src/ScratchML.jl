@@ -1,10 +1,11 @@
 module ScratchML
 
 # Write your package code here.
+export distance
 
 abstract type AbstractModel end
 
-include("logreg.jl")
+include("logreg.jl","kmean.jl")
 #function fit!(m::AbstractModel,X::AbstractVecorMat,y::AbstractVector) un pour chaque modele y existe que dans le cas supervisé
 #function predict(m::AbstractModel) 
 
