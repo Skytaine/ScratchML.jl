@@ -1,4 +1,4 @@
-module Projet_Machine_Learning
+module ScratchML
 
 # Write your package code here.
 
