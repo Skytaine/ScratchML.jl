@@ -1,4 +1,4 @@
-using Projet_Machine_Learning
+using ScratchML
 using DataFrames
 using Distributions
 using CSV
@@ -7,4 +7,3 @@ using RDatasets
 iris= dataset("datasets", "iris")
 unique(iris[!,"Species"])
 
-Projet_Machine_Learning.LogReg()
