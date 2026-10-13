@@ -1,0 +1,7 @@
+name = "ScratchML"
+uuid = "608e2f34-2c64-44e5-8ff5-675cee42f987"
+authors = ["Skytaine <prousterwan3737@gmail.com>"]
+version = "0.0.1"
+
+[compat]
+julia = "1.10"
