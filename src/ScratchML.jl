@@ -1,7 +1,8 @@
 module ScratchML
-
+using Random #, Statistics
 # Write your package code here.
-export distance , init_flags , init_flagsbis
+export distance, init_flags, init_flagsbis
+export InitAlea, InitChoice
 
 abstract type AbstractModel end
 
