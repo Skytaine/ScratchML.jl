@@ -26,7 +26,7 @@ function init_flags(::InitChoice , X , k)
     n=size(X,2)
     flags=[rand(1:n)]
     while length(flags)<k
-        d2=[(minimum(distance(X[:,i],X[:,j])) for j in flags) for i in 1:n ]
+        d2=[minimum(distance(X[:,i],X[:,j]) for j in flags) for i in 1:n]
         r=rand()*sum(d2)
         c=cumsum(d2)
         for i in 1:n
@@ -38,7 +38,6 @@ function init_flags(::InitChoice , X , k)
     end
     return X[:,flags]
 end
-
 
 
 
