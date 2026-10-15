@@ -1,7 +1,11 @@
 name = "ScratchML"
 uuid = "608e2f34-2c64-44e5-8ff5-675cee42f987"
-authors = ["Skytaine <prousterwan3737@gmail.com>"]
 version = "0.0.1"
+authors = ["Skytaine <prousterwan3737@gmail.com>"]
+
+[deps]
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [compat]
+Random = "1.11.0"
 julia = "1.10"

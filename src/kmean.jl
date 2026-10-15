@@ -1,5 +1,3 @@
-using Random , Statistics
-
 
 function distance(a,b)
     return sum(abs2, a.-b)
