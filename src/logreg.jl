@@ -8,7 +8,7 @@ mutable struct LogReg <: AbstractModel
 end
 
 #son constructeur
-LogReg(;weights=Float64[],max_iter=100)=LogReg(weights,max_iter)
+LogReg(;weights=Float64[],max_iter=100,tol=1e-16,lr=0.1)=LogReg(weights,max_iter,tol,lr)
 
 
 
@@ -29,4 +29,13 @@ end
 
 
 #On va maximiser pour une valeur du vecteur weights la logvrai
-#Une descente de gradient 
+#Fonction gradient
+function gradient(w::Vector,X::Matrix,y::Vector)
+    p=sigm.(X*w)
+    X'*(y .- p)
+end
+
+#fonction fit! : la descente de gradient
+function fit!(model::LogReg,X,y::Vector)
+    
+end
