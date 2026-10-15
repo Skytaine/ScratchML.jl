@@ -1,8 +1,11 @@
 module ScratchML
 using Random #, Statistics
+using DataFrames #pour les dataframes
 # Write your package code here.
 export distance, init_flags, init_flagsbis
 export InitAlea, InitChoice
+export fit!, predict, logvrai, gradient, ajout_col_1, sigm, LogReg
+
 
 abstract type AbstractModel end
 

@@ -1,7 +1,8 @@
+
 #on définit le modèle de régréssion linéaire
 
 mutable struct LogReg <: AbstractModel
-    weights::Vector{Float64} #Poids de la régression logistique
+    weights::Vector #Poids de la régression logistique
     max_iter::Int64 #on limite le nombre d'itération pour converger vers le meilleurs paramètres
     tol::Float64 #le seuil d'ou on considère que la descente de gradient a converger
     lr::Float64 #les pas de la descente de gradient
@@ -35,7 +36,39 @@ function gradient(w::Vector,X::Matrix,y::Vector)
     X'*(y .- p)
 end
 
+#je veux utiliser des matrices pour les calculs mais X est un DataFrames
+#J'utilise le multiple dispatching sur la fonction qui ajoute la colonne de 1 pour utiliser fit et predict avec dataframe et matrices
+function ajout_col_1(X::AbstractMatrix)
+    Xb = hcat(ones(size(X, 1)), X)
+    return Xb
+end
+
+function ajout_col_1(X::AbstractDataFrame)
+    X=Matrix(X)
+    return ajout_col_1(X)
+end
+
 #fonction fit! : la descente de gradient
 function fit!(model::LogReg,X,y::Vector)
-    
+    n=size(X,1) #on divise le gradient pour pas avoir de probleme avec le pas en fonction de n
+    Xb = ajout_col_1(X)   # ajoute une colonne de 1 (colonne pour le coefficient constant dans weights)
+    w=zeros(size(Xb,2)) #vecteur weights avec que des zéros
+    for i in 1:model.max_iter #on limite le nombre d'itération si on diverge on converge trop lentement
+        g=gradient(w,Xb,y) ./n
+        if sqrt(sum(g .^2))<model.tol #si on converge vers le max on s'arrete
+            break
+        end
+        w=w + model.lr .* g
+    end
+    model.weights=w
+    print("Fit LogReg fini")
+    return model
 end
+
+#fonction predict
+function predict(model::LogReg,X)
+    p=sigm.(ajout_col_1(X)*model.weights)
+    return p .> 0.5
+end
+
+
