@@ -12,7 +12,7 @@ struct InitChoice <: AbstractModel end
 
 
 function init_flags(::InitAlea, X, k)
-    n = length(size(X,2))
+    n = size(X,2)
     flags = [rand(1:n)]
     while length(flags) < k
         i = rand(1:n)
@@ -20,7 +20,7 @@ function init_flags(::InitAlea, X, k)
             push!(flags, i)
         end
     end
-    return [X[i] for i in flags]
+    return X[:,flags]
 end
 
 
