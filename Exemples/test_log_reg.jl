@@ -8,5 +8,5 @@ using CSV
 #Pour avoir des dataframes exemples usuelles
 using RDatasets
 
-iris= dataset("datasets", "iris")
-typeof(iris)
+using Symbolics
+
