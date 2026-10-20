@@ -11,10 +11,12 @@ try; import KaimonSlate; catch; error("This is a Kaimon Slate notebook — runni
 
 Mesurer à quel point deux points `a` et `b` sont éloignés :
 
-$$d(a, b) = \sum_{r} (a_r - b_r)^2$$
+$$d(a, b) = \sum_{i} (a_i - b_i)^2$$
 
 C'est la **distance euclidienne au carré**. On garde le carré (pas de racine) car, pour savoir quel point est le plus proche, le classement est le même : si $d_1 < d_2$ alors $\sqrt{d_1} < \sqrt{d_2}$.
 """
+
+#%% md id=fb57a1
 
 # ╔═╡ Slate.config · per-notebook settings (Settings panel)
 #   docid = 005ef319-bf6a-4777-8f08-776c381f816c
