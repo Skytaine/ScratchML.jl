@@ -21,8 +21,10 @@ On veut estimer le vecteur $a=(a_0,\dots,a_n)$ par le maximum de vraisemblance.
 
 """
 
-#%% code id=590dc8
-using MLJ, DataFrames, Random, Distributions
+#%% code id=590dc8 collapsed
+using MLJ, MLJTransforms
+using Random, Distributions
+using DataFrames
 #on crée un dataset pour une régression logistique
 #on crée 2 colonne explicative
 n=25
@@ -31,17 +33,46 @@ sexe=rand(["H","F"],n)
 #on donne les coeff de la variable sexe
 coef_sexe=Dict("H"=>0.9,"F"=>-0.2)
 #sexe est standardisé (centré réduit) et on calcule a
-a=-1 .- 0.3 .* (age .- 45)/4  .+ [coef_sexe[s] for s in sexe]
+a=-1 .- 0.3 .* (age .- 45) ./4  .+ [coef_sexe[s] for s in sexe]
 
 #la régression logistique doit nous donnée des valeurs proche du a_réel
-a_réel=[-1,-0.3,0.9,-0.2]
+# pour avoir autant de chaque classe on veut mean(a)=log(0.5)
+a_réel=[-1,-0.3,-0.2,0.9] 
 
-p=1 ./ (1 .+ exp.(a))
-class=Int.(rand(n) .> p)
+p=1 ./ (1 .+ exp.(-a))
+class=Int.(0.5 .> p)
 
 df=DataFrame(age=age,sexe=sexe,class=class)
 
-#%% code id=f76d36
+
+#On utilise cet version préparé pour MLJ et ScratchML
+df2=MLJ.transform(fit!(machine(OneHotEncoder(),coerce(df,:sexe=>Multiclass,:age=>Count,:class=>Count))))
+df2.age=(age .- 45)./4
+#df2[!,[:class]] pour extraire une colonne
+
+#%% md id=455c05
+@md"""
+# Visualisation
+On a la fonction sigmoïde en bleu et notre seuil en rouge.   
+Les points représente une prédiction de la classe d'une ligne :  
+Au dessus du seuil -> classe 1   
+En dessous -> classe 0   
+Les points coïncide lorsque les coefficent a_0, a_a, a_F, a_H sont au valeurs de a_réel  
+$$a_{réel}=[-1,-0.3,-0.2,0.9]. $$
+"""
+
+#%% code id=f4782b
+#slider des 4 paramètres
+@bind a_0 Slider(range(-2,step=0.1,length=41))
+@bind a_a Slider(range(-2,step=0.1,length=41))
+@bind a_F Slider(range(-2,step=0.1,length=41))
+@bind a_H Slider(range(-2,step=0.1,length=41))
+
+a_test=[a_0,a_a,a_F,a_H]
+a_pred=Matrix(hcat(ones(n),df2)[:,Not(:class)])*a_test
+p_pred=1 ./ (1 .+ exp.(-a_pred))
+print("Accuracy = ", sum(Int.(0.5 .> p_pred) .== class)/n*100 , "%")
+echart(series(:line, -10:10, 1 ./ (1 .+ exp.(-(-10:10))),showSymbol=false),series(:scatter, a, p),series(:line,-10:10,0.5 .+ 0* (-10:10),showSymbol=false),lineStyle = (type = "dashed"),series(:scatter, a_pred, p_pred))
 
 #%% md id=60565f
 @md"""
@@ -67,5 +98,5 @@ Calcul du maximum de vraisemblance (descente de gradient)
 #   Plots 1.41.7 91a5bcdd-55d7-5caf-9e0b-520d859cae80
 # ╚═╡
 # ╔═╡ Slate.config · per-notebook settings (Settings panel)
-#   docid = 8e760128-3fa4-4eb7-9dee-473d59eaad61
+#   docid = 9cde95f1-4d41-4a35-9bd6-6acad98e5462
 # ╚═╡
