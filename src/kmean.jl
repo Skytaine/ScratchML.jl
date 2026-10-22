@@ -76,3 +76,20 @@ function repo(X, closer, k)
     end
     return C
 end
+
+
+
+mutable struct KMeansModel <: AbstractModel
+    k::Int
+    max_iter::Int
+    stop::Float64    # si distance des flags inférieur à stop on arrete
+    init::AbstractInit
+    flags::Matrix{Float64}
+    closer::Vector{Int}
+    total_distance::Float64
+    n_iter::Int
+end
+
+
+KMeansModel( k=3, max_iter=300, stop=1e-4, init=InitAlea()) =
+    KMeansModel(k, max_iter, stop, init, zeros(0, 0), [], 0.0, 0)   # Int[] liste vide d'entier  
