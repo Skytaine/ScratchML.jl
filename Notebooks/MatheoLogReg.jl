@@ -21,13 +21,13 @@ On veut estimer le vecteur $a=(a_0,\dots,a_n)$ par le maximum de vraisemblance.
 
 """
 
-#%% code id=590dc8 collapsed
+#%% code id=e3fd92
 using MLJ, MLJTransforms
 using Random, Distributions
 using DataFrames
 #on crée un dataset pour une régression logistique
 #on crée 2 colonne explicative
-n=25
+n=20
 age=floor.(Int,rand(Normal(45,16),n))
 sexe=rand(["H","F"],n)
 #on donne les coeff de la variable sexe
@@ -46,8 +46,9 @@ df=DataFrame(age=age,sexe=sexe,class=class)
 
 
 #On utilise cet version préparé pour MLJ et ScratchML
-df2=MLJ.transform(fit!(machine(OneHotEncoder(),coerce(df,:sexe=>Multiclass,:age=>Count,:class=>Count))))
+df2=MLJ.transform(MLJ.fit!(machine(OneHotEncoder(),coerce(df,:sexe=>Multiclass,:age=>Count,:class=>Count))))
 df2.age=(age .- 45)./4
+df2
 #df2[!,[:class]] pour extraire une colonne
 
 #%% md id=455c05
@@ -72,6 +73,7 @@ a_test=[a_0,a_a,a_F,a_H]
 a_pred=Matrix(hcat(ones(n),df2)[:,Not(:class)])*a_test
 p_pred=1 ./ (1 .+ exp.(-a_pred))
 print("Accuracy = ", sum(Int.(0.5 .> p_pred) .== class)/n*100 , "%")
+
 echart(series(:line, -10:10, 1 ./ (1 .+ exp.(-(-10:10))),showSymbol=false),series(:scatter, a, p),series(:line,-10:10,0.5 .+ 0* (-10:10),showSymbol=false),lineStyle = (type = "dashed"),series(:scatter, a_pred, p_pred))
 
 #%% md id=60565f
@@ -92,10 +94,13 @@ Le Data contient les variables explicative X et la variable a expliquer Y.
 Calcul du maximum de vraisemblance (descente de gradient)
 """
 
+#%% code id=666db4
+using CSV, DataFrames
+using MLJ
+using ScratchML
+
 # ╔═╡ Slate.env · notebook packages (auto-maintained — manage via the package panel)
-#   GLMakie 0.13.15 e9467ef8-e4e7-5192-8a1a-b1aee30e663a
-#   MLJ 0.23.3 add582a8-e3ab-11e8-2d5e-e98b27df1bc7
-#   Plots 1.41.7 91a5bcdd-55d7-5caf-9e0b-520d859cae80
+#   MLJTransforms 0.1.8 23777cdb-d90c-4eb0-a694-7c2b83d5c1d6
 # ╚═╡
 # ╔═╡ Slate.config · per-notebook settings (Settings panel)
 #   docid = 9cde95f1-4d41-4a35-9bd6-6acad98e5462
