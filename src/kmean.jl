@@ -80,16 +80,27 @@ end
 
 
 mutable struct KMeansModel <: AbstractModel
-    k::Int
-    max_iter::Int
+    k::Int 
+    max_iter::Int 
     stop::Float64    # si distance des flags inférieur à stop on arrete
-    init::AbstractInit
-    flags::Matrix{Float64}
-    closer::Vector{Int}
-    total_distance::Float64
-    n_iter::Int
+    init::AbstractModel 
+    flags::Matrix{Float64} #ou sont les flags à la fin
+    closer::Vector{Int} #le numero du groupe pour chaque personne 
+    total_distance::Float64 #le score final (plus il est petit mieux c'est)
+    n_iter::Int #combien de tours on a fait
 end
 
 
 KMeansModel( k=3, max_iter=300, stop=1e-4, init=InitAlea()) =
-    KMeansModel(k, max_iter, stop, init, zeros(0, 0), [], 0.0, 0)   # Int[] liste vide d'entier  
+    KMeansModel(k, max_iter, stop, init, zeros(0, 0), Int[], 0.0, 0)   # Int[] liste vide d'entier  
+
+
+    
+function fit!(model::KMeansModel,X)
+
+end
+
+function prediction()
+    
+end
+
