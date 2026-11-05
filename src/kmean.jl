@@ -97,10 +97,18 @@ KMeansModel( k=3, max_iter=300, stop=1e-4, init=InitAlea()) =
 
     
 function fit!(model::KMeansModel,X)
+    C=init_flags(,X,k)
+    for i in 1::max_iter
+        n_iter=init_flags
+        
+        closer=assigned(X,C)
+        C_new=repo(X,closer,k)
+        
 
 end
 
-function prediction()
-    
+function prediction(m::KMeansModel,X)
+    closer , total_distance = assigned(X,m.flags)
+    return closer
 end
 
