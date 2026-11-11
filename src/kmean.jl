@@ -62,7 +62,8 @@ function assigned(X,C)
     return closer , total_distance
 end
 
-
+#closer correspond à la liste des centroide le plus proche pour chaque personne
+#total_distance corespond a la somme des distance entre un point et son centroide (score de qualité)
 
 function repo(X, closer, k)
     C = zeros(size(X, 1), k)
@@ -96,15 +97,26 @@ KMeansModel( k=3, max_iter=300, stop=1e-4, init=InitAlea()) =
 
 
     
-function fit!(model::KMeansModel,X)
-    C=init_flags(,X,k)
-    for i in 1::max_iter
-        n_iter=init_flags
-        
-        closer=assigned(X,C)
-        C_new=repo(X,closer,k)
-        
+function fit!(m::KMeansModel,X)
+    C=init_flags(m.init,X,m.k)
+    n_iter=0
 
+    for i in 1::m.max_iter
+        n_iter=i      
+        closer,_=assigned(X,C)      #,_ permet de "jeter a la poubelle" total_distance on aurait pu mettre aussi closer = assigned(X, C)[1]
+        C_new=repo(X,closer,m.k)
+        dist_C=sum(distance(C[:,j],C_new[:,j]) for j in 1:m.k) # somme des distance entre la position du nouveau et de l'ancien centroide 
+        C=C_new
+        if dist_C < m.stop
+            break
+        end
+    end
+    closer , total_distance=assigned(X,C)
+    m.flags=c
+    m.closer=closer
+    m.total_distance=total_distance
+    m.n_iter=n_iter
+    return m       
 end
 
 function prediction(m::KMeansModel,X)
