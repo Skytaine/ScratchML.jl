@@ -94,7 +94,7 @@ Le Data contient les variables explicative X et la variable a expliquer Y.
 Calcul du maximum de vraisemblance (descente de gradient)
 """
 
-#%% code id=5440e6 hidecode
+#%% code id=5440e6
 using DataFrames
 using MLJ
 using ScratchML
@@ -115,7 +115,7 @@ ScratchML.fit!(model,X_mat,y .- 1)
 y_pred=ScratchML.predict(model,X_mat)
 
 #Précision
-println("\nPrécision =",100-sum(abs.( y .-1 - y_pred))/length(y),"%")
+println("\nPrécision =",accuracy( y .-1 , y_pred)*100,"%")
 
 println("\nOn a un grande précision quand les centres sont éloignés")
 
@@ -144,12 +144,37 @@ ScratchML.fit!(model,X_mat,y .- 1)
 y_pred=ScratchML.predict(model,X_mat)
 
 #Précision
-println("\nPrécision =",100-sum(abs.( y .-1 - y_pred))/length(y),"%")
+println("\nPrécision =",accuracy( y .-1 , y_pred)*100,"%")
 
-println("\nOn a un grande précision même quand les ensembles se superposent")
+println("\nOn a une précision plus faible les ensembles se superposent")
 
 index=Bool.(y .- 1)
 
+echart(series(:scatter,X_mat[index,1],X_mat[index,2]),series(:scatter,X_mat[.!index,1],X_mat[.!index,2]))
+
+#%% code id=b7571c
+using DataFrames
+using MLJ
+using ScratchML
+
+#On utilise MLJ pour faire un dataset artificiel pour la régression logistique
+n=2000
+
+X_mat, y = make_circles(n, as_table=false)
+
+
+model=LogReg()
+
+ScratchML.fit!(model,X_mat,y )
+
+y_pred=ScratchML.predict(model,X_mat)
+
+#Précision
+println("\nPrécision =",accuracy( y  , y_pred)*100,"%")
+
+println("\nOn a une précision plus faible les ensembles se superposent")
+
+index=Bool.(y)
 echart(series(:scatter,X_mat[index,1],X_mat[index,2]),series(:scatter,X_mat[.!index,1],X_mat[.!index,2]))
 
 # ╔═╡ Slate.env · notebook packages (auto-maintained — manage via the package panel)

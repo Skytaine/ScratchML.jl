@@ -1,10 +1,11 @@
 module ScratchML
 using Random #, Statistics
 using DataFrames #pour les dataframes
+import StatsAPI: fit!, predict
 # Write your package code here.
 export distance, init_flags, init_flagsbis , assigned , repo 
 export InitAlea, InitChoice
-export fit!, predict, logvrai, gradient, ajout_col_1, sigm, LogReg
+export logvrai, gradient, ajout_col_1, sigm, LogReg, predict
 
 
 abstract type AbstractModel end
