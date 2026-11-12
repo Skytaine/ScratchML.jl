@@ -61,12 +61,11 @@ function fit!(model::LogReg,X,y::Vector)
         w=w + model.lr .* g
     end
     model.weights=w
-    print("Fit LogReg fini")
     return model
 end
 
 #fonction predict
-function predict(model::LogReg,X)
+function StatsAPI.predict(model::LogReg,X)
     p=sigm.(ajout_col_1(X)*model.weights)
     return p .> 0.5
 end
