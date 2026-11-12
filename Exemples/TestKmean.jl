@@ -30,9 +30,9 @@ assigned(X2, [0.0 10.0; 0.0 10.0])    # ([1, 1, 2, 2], 2.0)
 
 # ScratchML.Statistics.mean(X2[:, 1:2],dims=2)
 
-repo(X1, [1, 1, 1, 2, 2, 2], 2)        # [2.0 11.0]
-repo(X2, [1, 1, 2, 2], 2)             # [0.0 10.0; 0.5 10.5]
+mouv(X1, [1, 1, 1, 2, 2, 2], 2)        # [2.0 11.0]
+mouv(X2, [1, 1, 2, 2], 2)             # [0.0 10.0; 0.5 10.5]
 
-C = repo(X1, [1, 1, 1, 1, 1, 1], 2)
+C = mouv(X1, [1, 1, 1, 1, 1, 1], 2)
 C[1, 1]                # 6.5 (la moyenne des 6)
 C[1, 2] in X1           # true (drapeau replacé sur un enfant)

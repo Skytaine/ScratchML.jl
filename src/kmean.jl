@@ -65,7 +65,7 @@ end
 #closer correspond à la liste des centroide le plus proche pour chaque personne
 #total_distance corespond a la somme des distance entre un point et son centroide (score de qualité)
 
-function repo(X, closer, k)
+function mouv(X, closer, k)
     C = zeros(size(X, 1), k)
     for j in 1:k
         team = findall(closer .== j) #findall cherche où se trouvent les cases « vrai » dans une liste, et rend leurs numéros (position) sous une liste. et closer .== et pas == car .== parcourt pour chaque valeur de la liste et == demande si la liste entière est égale
@@ -119,7 +119,7 @@ function fit!(m::KMeansModel,X)
     return m       
 end
 
-function prediction(m::KMeansModel,X)
+function StatsAPI.predict(m::KMeansModel,X)
     closer , total_distance = assigned(X,m.flags)
     return closer
 end
