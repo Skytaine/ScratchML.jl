@@ -21,10 +21,10 @@ On veut estimer le vecteur $a=(a_0,\dots,a_n)$ par le maximum de vraisemblance.
 
 """
 
-#%% code id=e3fd92
+#%% code id=e3fd92 hidecode
 using MLJ, MLJTransforms
 using Random, Distributions
-using DataFrames
+using DataFrames, CSV
 #on crée un dataset pour une régression logistique
 #on crée 2 colonne explicative
 n=20
@@ -48,7 +48,7 @@ df=DataFrame(age=age,sexe=sexe,class=class)
 #On utilise cet version préparé pour MLJ et ScratchML
 df2=MLJ.transform(MLJ.fit!(machine(OneHotEncoder(),coerce(df,:sexe=>Multiclass,:age=>Count,:class=>Count))))
 df2.age=(age .- 45)./4
-df2
+typeof(df2)
 #df2[!,[:class]] pour extraire une colonne
 
 #%% md id=455c05
@@ -64,10 +64,10 @@ $$a_{réel}=[-1,-0.3,-0.2,0.9]. $$
 
 #%% code id=f4782b
 #slider des 4 paramètres
-@bind a_0 Slider(range(-2,step=0.1,length=41))
-@bind a_a Slider(range(-2,step=0.1,length=41))
-@bind a_F Slider(range(-2,step=0.1,length=41))
-@bind a_H Slider(range(-2,step=0.1,length=41))
+@bind a_0 Slider(range(-2,step=0.1,length=41),default=-1)
+@bind a_a Slider(range(-2,step=0.1,length=41),default=-0.3)
+@bind a_F Slider(range(-2,step=0.1,length=41),default=-0.2)
+@bind a_H Slider(range(-2,step=0.1,length=41),default=0.9)
 
 a_test=[a_0,a_a,a_F,a_H]
 a_pred=Matrix(hcat(ones(n),df2)[:,Not(:class)])*a_test
@@ -94,12 +94,67 @@ Le Data contient les variables explicative X et la variable a expliquer Y.
 Calcul du maximum de vraisemblance (descente de gradient)
 """
 
-#%% code id=666db4
-using CSV, DataFrames
+#%% code id=5440e6 hidecode
+using DataFrames
 using MLJ
 using ScratchML
 
+#On utilise MLJ pour faire un dataset artificiel pour la régression logistique
+n=200
+p=2
+
+centre=[-10 -10; 10 10]
+
+X_mat, y = make_blobs(n, p; centers=centre, as_table=false)
+
+
+model=LogReg()
+
+ScratchML.fit!(model,X_mat,y .- 1)
+
+y_pred=ScratchML.predict(model,X_mat)
+
+#Précision
+println("\nPrécision =",100-sum(abs.( y .-1 - y_pred))/length(y),"%")
+
+println("\nOn a un grande précision quand les centres sont éloignés")
+
+index=Bool.(y .- 1)
+
+echart(series(:scatter,X_mat[index,1],X_mat[index,2]),series(:scatter,X_mat[.!index,1],X_mat[.!index,2]))
+
+#%% code id=591bcc
+using DataFrames
+using MLJ
+using ScratchML
+
+#On utilise MLJ pour faire un dataset artificiel pour la régression logistique
+n=2000
+p=2
+
+centre=[-1 0; 0 1]
+
+X_mat, y = make_blobs(n, p; centers=centre, as_table=false)
+
+
+model=LogReg()
+
+ScratchML.fit!(model,X_mat,y .- 1)
+
+y_pred=ScratchML.predict(model,X_mat)
+
+#Précision
+println("\nPrécision =",100-sum(abs.( y .-1 - y_pred))/length(y),"%")
+
+println("\nOn a un grande précision même quand les ensembles se superposent")
+
+index=Bool.(y .- 1)
+
+echart(series(:scatter,X_mat[index,1],X_mat[index,2]),series(:scatter,X_mat[.!index,1],X_mat[.!index,2]))
+
 # ╔═╡ Slate.env · notebook packages (auto-maintained — manage via the package panel)
+#   CSV 0.10.17 336ed68f-0bac-5ca0-87d4-7b16caf5d00b
+#   MLDatasets 0.7.22 eb30cadb-4394-5ae3-aed4-317e484a6458
 #   MLJTransforms 0.1.8 23777cdb-d90c-4eb0-a694-7c2b83d5c1d6
 # ╚═╡
 # ╔═╡ Slate.config · per-notebook settings (Settings panel)
