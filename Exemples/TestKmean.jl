@@ -24,6 +24,11 @@ assigned(X2, [0.0 10.0; 0.0 10.0])    # ([1, 1, 2, 2], 2.0)
 
 
 #fct repo
+# X2
+# k=3
+#  C = zeros(size(X2, 1), k)
+
+# ScratchML.Statistics.mean(X2[:, 1:2],dims=2)
 
 repo(X1, [1, 1, 1, 2, 2, 2], 2)        # [2.0 11.0]
 repo(X2, [1, 1, 2, 2], 2)             # [0.0 10.0; 0.5 10.5]
@@ -31,6 +36,3 @@ repo(X2, [1, 1, 2, 2], 2)             # [0.0 10.0; 0.5 10.5]
 C = repo(X1, [1, 1, 1, 1, 1, 1], 2)
 C[1, 1]                # 6.5 (la moyenne des 6)
 C[1, 2] in X1           # true (drapeau replacé sur un enfant)
-
-
-

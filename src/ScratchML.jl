@@ -1,5 +1,5 @@
 module ScratchML
-using Random #, Statistics
+using Random, Statistics
 using DataFrames #pour les dataframes
 import StatsAPI: fit!, predict
 # Write your package code here.

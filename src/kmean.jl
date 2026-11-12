@@ -72,7 +72,7 @@ function repo(X, closer, k)
         if length(team) == 0 # si personne associé au centroides on le positionne au hasard
             C[:, j] = X[:, rand(1:size(X, 2))]
         else
-            C[:, j] =(mean(X[:, team])) 
+            C[:, j] =mean(X[:, team],dims=2)
         end
     end
     return C
