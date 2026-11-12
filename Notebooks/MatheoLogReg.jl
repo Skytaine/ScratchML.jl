@@ -152,7 +152,7 @@ index=Bool.(y .- 1)
 
 echart(series(:scatter,X_mat[index,1],X_mat[index,2]),series(:scatter,X_mat[.!index,1],X_mat[.!index,2]))
 
-#%% code id=b7571c
+#%% code id=b7571c hidecode
 using DataFrames
 using MLJ
 using ScratchML
@@ -161,7 +161,6 @@ using ScratchML
 n=2000
 
 X_mat, y = make_circles(n, as_table=false)
-
 
 model=LogReg()
 
@@ -172,7 +171,7 @@ y_pred=ScratchML.predict(model,X_mat)
 #Précision
 println("\nPrécision =",accuracy( y  , y_pred)*100,"%")
 
-println("\nOn a une précision plus faible les ensembles se superposent")
+println("\nOn a une précision très faible pour prédire des classes qui ne sont pas linéaire")
 
 index=Bool.(y)
 echart(series(:scatter,X_mat[index,1],X_mat[index,2]),series(:scatter,X_mat[.!index,1],X_mat[.!index,2]))
