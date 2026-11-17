@@ -4,7 +4,6 @@ using ScratchML
 using MLJ
 #Pour utiliser des dataframe et csv
 using DataFrames
-using Plots
 using MLJLinearModels
 
 
@@ -21,7 +20,7 @@ y_mat=Vector(y)
 model=LogReg()
 
 
-ScratchML.fit!(model,X_mat,y_mat .- 1)
+fit!(model,X_mat,y_mat .- 1)
 
 y_pred=ScratchML.predict(model,X_mat)
 
