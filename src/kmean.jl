@@ -62,16 +62,17 @@ function assigned(X,C)
     return closer , total_distance
 end
 
+#closer correspond à la liste des centroide le plus proche pour chaque personne
+#total_distance corespond a la somme des distance entre un point et son centroide (score de qualité)
 
-
-function repo(X, closer, k)
+function mouv(X, closer, k)
     C = zeros(size(X, 1), k)
     for j in 1:k
         team = findall(closer .== j) #findall cherche où se trouvent les cases « vrai » dans une liste, et rend leurs numéros (position) sous une liste. et closer .== et pas == car .== parcourt pour chaque valeur de la liste et == demande si la liste entière est égale
         if length(team) == 0 # si personne associé au centroides on le positionne au hasard
             C[:, j] = X[:, rand(1:size(X, 2))]
         else
-            C[:, j] =(mean(X[:, team])) 
+            C[:, j] =mean(X[:, team],dims=2)
         end
     end
     return C
@@ -96,11 +97,30 @@ KMeansModel( k=3, max_iter=300, stop=1e-4, init=InitAlea()) =
 
 
     
-function fit!(model::KMeansModel,X)
+function fit!(m::KMeansModel,X)
+    C=init_flags(m.init,X,m.k)
+    n_iter=0
 
+    for i in 1::m.max_iter
+        n_iter=i      
+        closer,_=assigned(X,C)      #,_ permet de "jeter a la poubelle" total_distance on aurait pu mettre aussi closer = assigned(X, C)[1]
+        C_new=repo(X,closer,m.k)
+        dist_C=sum(distance(C[:,j],C_new[:,j]) for j in 1:m.k) # somme des distance entre la position du nouveau et de l'ancien centroide 
+        C=C_new
+        if dist_C < m.stop
+            break
+        end
+    end
+    closer , total_distance=assigned(X,C)
+    m.flags=c
+    m.closer=closer
+    m.total_distance=total_distance
+    m.n_iter=n_iter
+    return m       
 end
 
-function prediction()
-    
+function StatsAPI.predict(m::KMeansModel,X)
+    closer , total_distance = assigned(X,m.flags)
+    return closer
 end
 
