@@ -9,7 +9,7 @@ export fit!, predict, logvrai, gradient, ajout_col_1, sigm, LogReg
 
 abstract type AbstractModel end
 
-include("logreg.jl")
+#include("logreg.jl")
 include("kmean.jl")
 #function fit!(m::AbstractModel,X::AbstractVecorMat,y::AbstractVector) un pour chaque modele y existe que dans le cas supervisé
 #function predict(m::AbstractModel) 
