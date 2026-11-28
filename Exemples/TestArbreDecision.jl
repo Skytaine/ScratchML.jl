@@ -14,4 +14,6 @@ y = df.Survived
 A = df.Parch
 @btime best_split($A,$y)
 @btime best_splitO($A,$y)
+@btime gini(y)
+@btime entropie(y)
 print(A)

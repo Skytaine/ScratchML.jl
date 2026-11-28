@@ -10,7 +10,7 @@ export distance, init_flags, init_flagsbis, assigned, mouv
 export InitAlea, InitChoice
 export logvrai, gradient, ajout_col_1, sigm, LogReg
 export Arbre, Feuille, Noeud
-export gini, best_split, construire_arbre
+export gini, best_split, construire_arbre,entropie
 export best_splitO, construire_arbreO
 export meilleure_colonne,meilleure_colonneO
 export fit!, predict
